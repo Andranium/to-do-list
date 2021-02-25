@@ -1,32 +1,61 @@
+/* eslint-disable */
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
+    <the-modal />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts">
+import { Vue, Component, Watch } from "vue-property-decorator";
+import { Getter, Action } from "vuex-class";
+
+interface IndexedData {
+  [key: string]: any;
 }
 
-#nav {
-  padding: 30px;
+@Component
+export default class App<T extends IndexedData> extends Vue {
+  @Getter("getList") getList: any;
+  @Action("fetchData") fetchData: any;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+  created() {
+    if (!(process as T).browser) return;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+    this.fetchData();
   }
+
+  @Watch("getList", { deep: true })
+  onListChange(value: T) {
+    if (!(process as T).browser) return;
+
+    if (value.length === 0) {
+      localStorage.removeItem("todoList");
+      return;
+    }
+
+    localStorage.setItem("todoList", JSON.stringify(value));
+  }
+}
+</script>
+
+<style lang="scss">
+:root {
+  --white: #ffffff;
+  --overlay: #00000066;
+  --main-light-gray: #d3d3d373;
+  --main-dark-red: #e84118;
+  --sky-blue-light: #59c6ff;
+  --sky-blue-dark: #00a8ff;
+  --main-dark-blue: #273c75;
+  --light-blue: #273c7557;
+  --main-dark-green: #44bd32;
+  --main-light-green: #44bd32ab;
+  --main-dark-yellow: #fbc531;
+}
+
+#app {
+  display: flex;
+  justify-content: center;
 }
 </style>

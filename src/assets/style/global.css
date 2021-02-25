@@ -1,0 +1,21 @@
+*,
+*::after,
+*::before {
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-size: 1.6rem;
+    box-sizing: border-box;
+    color: #2c3e50;
+}
